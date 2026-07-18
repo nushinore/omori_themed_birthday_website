@@ -1,0 +1,41 @@
+1. <p></p> =  paragraph text
+2. <pre></pre> = pre-formatted text
+3. <head></head> = information about the website (like website header)
+4. <title></title> = used for putting the title in the head tag
+5. <body></body> = body of the html page
+6. <h1> , <h2>, <h3>, <h4> = header text (1>4 in size) (all have closing tags)
+7. <br> = breakline, move to the next line
+8. <hr> = horizontol row; draws a horizontal line on the screen
+9. <a></a> = anchor tag (attributes: href(link), title(on hover), target(if you wanna open in another tab))
+10. <img> = adds an image  (attributes: src (link to the image), alt(alternate text when image doesnt load), height, width) 
+11. <audio></audio> = adding audio to the website (attributes: controls (to add controls to play the audio), autoplay (autoplay the audio)  )
+12. <source></source> (under audio and video and image tag) =  (attributes: src(source link of the audio), )
+13. <video> = attributes: src , height, width
+14. FAVICON - add image to the website box, like top icon = atleast 96x96 dimension
+    |
+    V 
+under <head>
+ <link rel="icon" type="image/png" href=location of file>
+</head>
+15. <b></b> = bold text
+16. <i></i> = italic text 
+17. <u></u> = underlined text
+18. <del></del> = deleted text 
+19. <big></big> = text a little bit big than other surrounded text
+20. <small></small> =similar to big but small
+21. <sub></sub> = subscript text
+22. <sup></sup> = superscript text 
+23. <tt></tt> = monospaced text
+24. <mark></mark> = highlight effect; default=yellow (attribute: style="background-color: pink etc")
+25. <span></span>
+26. <div></div>
+27. <ul></ul> = unordered list
+28. <ol></ol> = ordered list
+29. <dl></dl> = descriptive list
+30. <li></li> = list item 
+31. <dt></dt> =  under descriptive list;  data title
+32. <dd></dd> = under <dt>; data definition 
+33. <table></table> = create a table 
+34. <tr></tr> = create a table row 
+35. <td></td> = table data 
+36. <th></th> = table header data 
