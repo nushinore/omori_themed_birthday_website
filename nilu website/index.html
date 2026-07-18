@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- this is a comment-->
+<html>
+    <head>
+        <style>
+            @font-face {
+                font-family: 'OMORI_GAME';
+                src: url('OMORI_GAME.ttf') format('truetype');
+            }
+            @font-face {
+                font-family: 'OMORI_GAME2';
+                src: url('OMORI_GAME2.ttf') format('truetype');
+            }
+            h1 {
+                text-align: center;
+                width: 100%; /* Ensures the header spans the whole screen to find the true center */
+                font-family:'Pixel Digivolve';
+                color: white;
+                font-size: 75px;
+                text-shadow: #0b011c;
+            }
+            .playground-scene {
+                position: relative;
+                display: inline-block; /* Fits the exact size of your background image */
+                }    
+            .swinging-character {
+                position: absolute;
+                cursor: pointer;
+                /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
+                 top: 31%;   
+                 left: 78%;  
+                 width: 90px; 
+                 z-index: 10; /* Ensures the character sits on top of the swing seat background */
+                }
+            .bouncing_header
+            {
+                display: inline-block;/* Required for transforms to work well on text */
+                animation: floatUpDown 2s ease-in-out infinite
+            }
+            @keyframes floatUpDown {
+            0% {
+                transform: translateY(0px); /* Starting position */
+            }
+            50% {
+                transform: translateY(-20px); /* Moves up by 20 pixels */
+            }
+            100% {
+                transform: translateY(0px); /* Returns to starting position */
+            }
+            }
+            body {
+            background-image: url('https://drive.google.com/file/d/1eJCkyO6IqTbIbQXQGTL7EI4xUVY2VhW_/view?usp=sharing');
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-size: 100%;
+            background-color: #0b011c;
+            margin: 0;
+            height: 100vh;
+            image-rendering: pixelated;
+            }
+            .bottom-dialogue {
+            display: none; 
+            position: fixed;
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 100%;
+            max-width: 800px;
+            background-color: #050505; 
+            color: #ffffff;
+            padding-top:10px;
+            padding-left:20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            font-family: OMORI_GAME2;
+            font-size: 30px;
+            z-index: 1000;
+            }
+            button{
+                cursor: pointer; 
+                border: none; 
+                background: transparent; 
+                color: #ffffff; 
+                font-family: OMORI_GAME2; 
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+            button:hover{
+                font-size: 25px;
+            }
+
+        </style>
+
+        <title>Happy 20th Birthday!!!</title>
+        <link rel="icon" type="image/png" href="iconimag.png">
+    </head>
+
+    <body>
+        <div id="dialogueBox" class="bottom-dialogue">   <!--dialogue box-->
+        <h4 id="character_name" style="font-family: OMORI_GAME2; margin-top: 0; margin-bottom: 0; color: rgb(171, 32, 225)"></h4>    
+        <p id="typingText" style="margin-top: 0;"></p>
+        <button id="textbox_button"><u>finish</u></button>
+        </div>
+        <br>
+        <audio id="bg_music" autoplay  muted loop>    <!--background music-->
+            <source src="05. By Your Side..mp3">
+        </audio>
+        <audio id="typeSound"><source src="omori.ogg"></audio>          <!--typing sound-->
+        <h1 class="bouncing_header"> Happy 20th Birthday Nilu! </h1>                   <!--MAIN TITLE--> 
+        <div class="playground-scene">
+            <img src="pixil-gif-drawing.gif" width="80" id="NushiButton" style="margin-top: 200px; margin-left: 800px;">   <!--NUSHI CHARACTER-->
+            <img src="avi_gif.gif" class="swinging-character" id="AviButton">   <!--AVI CHARACTER-->
+        </div>
+        <script>
+             const gifButton = document.getElementById('NushiButton');
+             const dialogueBox = document.getElementById('dialogueBox');   
+             const typingText = document.getElementById('typingText');
+             const typeSound = document.getElementById('typeSound'); 
+             const textbox_button = document.getElementById('textbox_button');
+             const character_name = document.getElementById('character_name');
+
+             let index = 0;
+
+             //ANISH
+             AviButton.addEventListener('click', () => {
+                character_name.textContent = "anish";
+                character_name.style.color= "#8b0000"
+                 message = "happy birthday nilu!!! hope you like this website as much as i enjoyed making it :3 love you so much, welcome to your twentiessss";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                AviButton.src="avi_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                typeWriter(); 
+                textbox_button.addEventListener('click', () => {
+                    AviButton.src="avi_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                });
+            });
+                //ANUSH
+             NushiButton.addEventListener('click', () => {
+                character_name.textContent = "anush";
+                 message = "happy birthday nilu!!! hope you like this website as much as i enjoyed making it :3 love you so much, welcome to your twentiessss";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                NushiButton.src="nushi_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                typeWriter(); 
+                textbox_button.addEventListener('click', () => {
+                    NushiButton.src="pixil-gif-drawing.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                });
+            });
+
+            function typeWriter() {
+                if (index < message.length) {
+                    typeSound.play()
+                    typingText.textContent += message.charAt(index);
+                    index++;
+                    typeSound.play()
+                    setTimeout(typeWriter, 50); 
+                    }
+                }
+        </script>
+
+    </body>    
+</html>
