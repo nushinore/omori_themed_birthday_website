@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<!-- this is a comment-->
 <html>
     <head>
         <style>
             @font-face {
                 font-family: 'OMORI_GAME';
-                src: url('assets/OMORI_GAME.ttf') format('truetype');
+                src: url('assests/OMORI_GAME.ttf') format('truetype');
             }
             @font-face {
                 font-family: 'OMORI_GAME2';
-                src: url('assets/OMORI_GAME2.ttf') format('truetype');
+                src: url('assests/OMORI_GAME2.ttf') format('truetype');
             }
             h1 {
                 text-align: center;
                 width: 100%; /* Ensures the header spans the whole screen to find the true center */
-                font-family:'Pixel Digivolve';
+                font-family:'OMORI_GAME2';
                 color: white;
-                font-size: 75px;
+                font-size: 95px;
                 text-shadow: #0b011c;
+                outline-color: #050505;
             }
+            .strokeme{                
+                text-shadow:
+                    -2px -2px 0 #000,
+                    2px -2px 0 #000,
+                    -2px 2px 0 #000,
+                    2px 2px 0 #000;  
+                }
             .playground-scene {
                 position: relative;
                 display: inline-block; /* Fits the exact size of your background image */
@@ -27,11 +34,37 @@
                 position: absolute;
                 cursor: pointer;
                 /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
-                 top: 31%;   
+                 top: 13%;   
                  left: 78%;  
                  width: 90px; 
                  z-index: 10; /* Ensures the character sits on top of the swing seat background */
                 }
+            .bench-character {
+                position: absolute;
+                cursor: pointer;
+                /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
+                 top: -24%;   
+                 left: 126.5%;  
+                 width: 82px; 
+                 z-index: 10; /* Ensures the character sits on top of the swing seat background */
+                }
+                .bench-character2 {
+                position: absolute;
+                cursor: pointer;
+                /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
+                 top: -27.5%;   
+                 left: 119%;  
+                 width: 85px; 
+                 z-index: 10; /* Ensures the character sits on top of the swing seat background */
+                }
+            .polaroids{
+                position: absolute;
+                cursor: pointer;
+                top: 70%;   
+                left: 100%;  
+                width: 70px; 
+                z-index: 10;
+            }
             .bouncing_header
             {
                 display: inline-block;/* Required for transforms to work well on text */
@@ -49,7 +82,7 @@
             }
             }
             body {
-            background-image: url('assets/new background.jpg');
+            background-image: url('assests/new background.jpg');
             background-repeat: no-repeat;
             background-position: center top;
             background-size: 100%;
@@ -71,6 +104,7 @@
             padding-top:10px;
             padding-left:20px;
             border-radius: 10px;
+            border-color: #888;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
             font-family: OMORI_GAME2;
             font-size: 30px;
@@ -87,83 +121,914 @@
             }
             button:hover{
                 font-size: 25px;
+                color:"red";
             }
+            /* Blurs and darkens the entire browser layout */
+            .dark-overlay {
+                display: none; /* Controlled by JavaScript triggers */
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.7); /* Adjust 0.7 to make it darker or lighter */
+                backdrop-filter: blur(4px); /* Optional: Adds a cozy OMORI background blur */
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                z-index: 99999; /* Forces it over absolutely everything else */
+                cursor: pointer;
+            }
+            .close-hint {
+                color: #888;
+                font-family: 'OMORI_GAME2';
+                font-size: 20px;
+                margin-top: 20px;
+                }
+            .showcase-photo{
+                box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+                width: 350px;
+                height: 421px;
+            }
+            .center-image-container {
+                display: flex;
+                gap: 30px; /* Space between the images */
+                max-width: 90%;
+                justify-content: center;
+                }
+            #flash-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: white;
+                opacity: 0;
+                pointer-events: none;
+                z-index: 9999; /* keeps it on top of everything else */
+                transition: opacity 0.1s ease-in-out; /* speed going into the flash */
+            }
+            #flash-overlay.active {
+                opacity: 1;
+                transition: opacity 0.05s ease-in-out; /* snap to white quickly */
+                }        
 
         </style>
 
         <title>Happy 20th Birthday!!!</title>
-        <link rel="icon" type="image/png" href="assets/iconimag.png">
+        <link rel="icon" type="image/png" href="assests/iconimag.png">
     </head>
 
     <body>
+        <div id="flash-overlay"></div>  <!-- FLASH WHITE SCREEN -->
         <div id="dialogueBox" class="bottom-dialogue">   <!--dialogue box-->
         <h4 id="character_name" style="font-family: OMORI_GAME2; margin-top: 0; margin-bottom: 0; color: rgb(171, 32, 225)"></h4>    
         <p id="typingText" style="margin-top: 0;"></p>
-        <button id="textbox_button"><u>finish</u></button>
+        <button id="finish_button"><u>finish</u></button>
+        <button id="next_button"><u>next</u></button>
         </div>
         <br>
-        <audio id="bg_music" autoplay  loop>    <!--background music-->
-            <source src="assets/05. By Your Side..mp3">
+        <audio id="bg_music" autoplay loop>    <!--background music-->
+            <source src="assests/05. By Your Side..mp3">
         </audio>
-        <audio id="typeSound"><source src="assets/omori.ogg"></audio>          <!--typing sound-->
-        <h1 class="bouncing_header"> Happy 20th Birthday Nilu! </h1>                   <!--MAIN TITLE--> 
+        <audio id="wrongSound">
+            <source src="assests/cant_do_that.m4a">     <!-- WRONG CHOICE SOUND EFFECT-->
+        </audio>
+        <audio id="selectSound"><source src="assests/BA_do_nothing_falls_over.ogg"></audio>   
+        <audio id="typeSound"><source src="omori.ogg"></audio>          <!--typing sound-->
+        <audio id="PolaroidSound"><source src="assests/SE_Cassette_button.ogg"></audio>    <!--opening polaroids sound-->
+        <audio id="NextPolaroidSound"><source src="assests/SE_turn_page.ogg"></audio>     <!--next polaroid sound-->
+        <audio id="SweetheartSound"><source src="assests/SE_ohoho.ogg"></audio>     <!--ohoho sound-->
+        <audio id="PicnicSound"><source src="assests/picnicsound.m4a"></audio>     <!--picnic sound-->
+         <audio id="PhotographSound"><source src="assests/19. Space Road 1979.mp3"></audio>     <!--photograph background sound-->
+
+        <h1 class="bouncing_header strokeme"> Happy 20th Birthday Nilu! </h1>                   <!--MAIN TITLE--> 
         <div class="playground-scene">
-            <img src="assets/pixil-gif-drawing.gif" width="80" id="NushiButton" style="margin-top: 200px; margin-left: 800px; cursor: pointer">   <!--NUSHI CHARACTER-->
-            <img src="assets/avi_gif.gif" class="swinging-character" id="AviButton">   <!--AVI CHARACTER-->
+            <img src="assests/pixil-gif-drawing.gif" width="90" id="NushiButton" style="margin-top: 200px; margin-left: 800px; cursor: pointer;">   <!--NUSHI CHARACTER-->
+            <img src="assests/avi_gif.gif" class="swinging-character" id="AviButton">   <!--AVI CHARACTER-->
+            <img src="assests/smit_gif.gif" class="bench-character" id="SmitButton" top:50%>  <!--SMIT-->
+            <img src="assests/anisha_gif.gif" class="bench-character2" id="AnishaButton"> <!--ANISHA-->
+            <img src="assests/polaroids.png" class="polaroids" id="Polaroids">  <!--POLAROIDS-->    
+            <img src="assests/picnic_blanket.png" class="bench-character2" id="PicnicMat" style="width: 200px; top:-10%;left:13%">  <!--PICNIC MAT--> 
+            <img src="assests/birthday_cake.png" class="bench-character2" id="BirthdayCake" style="width: 80px; top:-18%;left:24%">  <!--BIRTHDAY CAKE--> 
+            <img src="assests/godi_gif.gif" class="bench-character2" id="GodiButton" style="width: 118px; top:9%;left:85%">  <!--GODYA--> 
+            <img src="assests/kajol_gif.gif" class="bench-character2" id="KajolButton" style="width: 95px; top:5%;left:13%">  <!--KAJOL--> 
+            <img src="assests/nilu_gif.png" class="bench-character2" id="NiluButton" style="width: 100px; top:15%;left:20%">  <!--NILU--> 
+            <img src="assests/sahil_gif.gif" class="bench-character2" id="SahilButton" style="width: 125px; top:20%;left:150%">  <!--SAHIL--> 
+            <img src="assests/lavya_gif.gif" class="bench-character2" id="LavyaButton" style="width: 120px; top:30%;left:140%">  <!--LAVYA--> 
+            <img src="assests/sneha_gif.gif" class="bench-character2" id="SnehaButton" style="width: 90px; top:8%;left:32%">  <!--SNEHA--> 
+            <img src="assests/atharva_gif.gif" class="bench-character2" id="AtharvaButton" style="width: 120px; top:55%;left:40%">  <!--ATHARVA--> 
+            <img src="assests/aditi_gif.gif" class="bench-character2" id="AditiButton" style="width: 120px; top:-45%;left:25%">  <!--ADITI--> 
+            <img src="assests/kshitija_gif.gif" class="bench-character2" id="KshitijaButton" style="width: 110px; top:-45%;left:150%">  <!--KSHITIJA--> 
+            <img src="assests/siya_gif.gif" class="bench-character2" id="SiyaButton" style="width: 110px; top:70%;left:135%">  <!--SIYA--> 
         </div>
+        <!-- Full-screen darkening overlay (Hidden by default) -->
+        <div id="imageShowcaseOverlay" class="dark-overlay">
+            <!-- Wrapper to hold your images in a clean row/grid -->
+            <div class="center-image-container">
+                <button id="backward_arrow"><img src="assests/red_arrow.gif"style=" width: 90px; height: 23px; transform: scaleX(-1);" ></button>
+                <img id="polaroid_image" src="assests/polaroid1.png" class="showcase-photo" alt="Memory 1">
+                <button id="forward_arrow"><img src="assests/red_arrow.gif"style=" width: 90px; height: 23px" ></button>
+            </div>
+            <!-- Tiny note to let users close it -->
+            <p class="close-hint" id="ClosePolaroids">Click here to close</p>
+        </div>
+
         <script>
+             const BGMUSIC = document.getElementById('bg_music');
              const gifButton = document.getElementById('NushiButton');
              const dialogueBox = document.getElementById('dialogueBox');   
              const typingText = document.getElementById('typingText');
              const typeSound = document.getElementById('typeSound'); 
-             const textbox_button = document.getElementById('textbox_button');
+             const finish_button = document.getElementById('finish_button');
              const character_name = document.getElementById('character_name');
+             const next_button = document.getElementById('next_button');
+             const wrongSound = document.getElementById('wrongSound');
+             const selectSound = document.getElementById('selectSound');
+             const imageShowcaseOverlay = document.getElementById('imageShowcaseOverlay');
+             const polaroid_image = document.getElementById('polaroid_image');
+             const PolaroidSound = document.getElementById('PolaroidSound');
+             const ForwardArrow = document.getElementById('forward_arrow');
+             const BackwardArrow = document.getElementById('backward_arrow');
+             const NextPolaroidSound =document.getElementById('NextPolaroidSound');
+             const ClosePolaroids =document.getElementById('ClosePolaroids');
+             const SweetheartSound =document.getElementById('SweetheartSound');
+             const PicnicSound =document.getElementById('PicnicSound');
+             const PhotographSound =document.getElementById('PhotographSound');
+             const BirthdayCake =document.getElementById('BirthdayCake');
+             const flash=document.getElementById('flash-overlay');
+             currentCharacter = "";
+
+             const polaroidImages = [
+                "assests/polaroid1.png",
+                "assests/polaroid2.png",
+                "assests/polaroid3.png",
+                "assests/polaroid4.png",
+                "assests/polaroid5.png",
+                "assests/polaroid6.png",
+                "assests/polaroid7.png",
+                "assests/polaroid8.png",
+                "assests/polaroid9.png",
+                "assests/polaroid10.png",
+                "assests/polaroid11.png",
+                "assests/polaroid12.png",
+                "assests/polaroid13.png",
+                "assests/polaroid14.png",
+                "assests/polaroid15.png",
+                "assests/polaroid16.png"
+                ];
 
              let index = 0;
+             let currentPhotoIndex = 0; // Starts tracking sequence at index zero
 
              //ANISH
              AviButton.addEventListener('click', () => {
+                currentCharacter="anish";
                 character_name.textContent = "anish";
                 character_name.style.color= "#8b0000"
-                 message = "happy birthday nilu!!! hope you like this website as much as i enjoyed making it :3 love you so much, welcome to your twentiessss";
+                 message = "Happy birthday Nila! I can't believe you are twenty now. Time passes by soo quickly, but I hope it never hinders what we have and we making wonderful memories that I'll forever hold close to my heart. I love youuuu. Chau ka tula?";
              // 3. Change the CSS display from "none" to "block" to make it pop up!
                  dialogueBox.style.display = "block";
-                AviButton.src="assets/avi_standing.png";
+                AviButton.src="assests/avi_standing.png";
                 // 4. Reset variables and start your typing effect
                 typingText.textContent = "";
                 index = 0;
                 typeWriter(); 
-                textbox_button.addEventListener('click', () => {
-                    AviButton.src="assets/avi_gif.gif";
-                    dialogueBox.style.display = "none";
-                    index=message.length;
-                });
+                next_button.addEventListener('click', () => {
+                    wrongSound.play()
+                });      
             });
                 //ANUSH
              NushiButton.addEventListener('click', () => {
+                currentCharacter="anush";
                 character_name.textContent = "anush";
+                character_name.style.color=" #966FD6" 
                  message = "happy birthday nilu!!! hope you like this website as much as i enjoyed making it :3 love you so much, welcome to your twentiessss";
              // 3. Change the CSS display from "none" to "block" to make it pop up!
                  dialogueBox.style.display = "block";
-                NushiButton.src="assets/nushi_standing.png";
+                NushiButton.src="assests/nushi_standing.png";
                 // 4. Reset variables and start your typing effect
                 typingText.textContent = "";
                 index = 0;
                 typeWriter(); 
-                textbox_button.addEventListener('click', () => {
-                    NushiButton.src="assets/pixil-gif-drawing.gif";
-                    dialogueBox.style.display = "none";
-                    index=message.length;
-                });
+            });
+              //GODI
+             GodiButton.addEventListener('click', () => {
+                currentCharacter="godi";
+                character_name.textContent = "godya";
+                character_name.style.color=" #008080" 
+                 message = "Happy birthday Nilu! Trust me this is not AI, just real efforts. Flaunting few GenZ slangs ik. You are GOAT and savage daughter of the family. Hats off to your unshaken courage to break the stereotypes. Keep slaying girl! Hope you get rich enough to take me on a long vacation with you🫶🏻";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                GodiButton.src="assests/godi_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                typeWriter(); 
+            });
+               
+            //SMIT
+             SmitButton.addEventListener('click', () => {
+                currentCharacter="smit";
+                character_name.textContent = "smit";
+                character_name.style.color= "#ffff00";
+                 message = "Yooo lala \n Mujhe kuch suj nai rha kya likhuuu par ya anyways im writing ts \n Firstly a very happy birthday to you bachiiiii🫶🏻🫶🏻🫶🏻. Badi hogayi lala tu... ";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                SmitButton.src="assests/smit_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //SIYA
+             SiyaButton.addEventListener('click', () => {
+                currentCharacter="siya";
+                character_name.textContent = "siya";
+                character_name.style.color= "#ffff00";
+                 message = "Happy Birthday to the most radiant bubbly person i know. Your happy, cheerful personality never failed to cheer me up and those lame but somehow still funny jokes always made me laugh even when I felt extremely low.  ";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                SiyaButton.src="assests/siya_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
             });
 
+            //KSHITIJA
+             KshitijaButton.addEventListener('click', () => {
+                currentCharacter="kshitija";
+                character_name.textContent = "kshitija";
+                character_name.style.color= "#ffff00";
+                 message = "HAPPIEST BIRTHDYA NILU 🎂💃🥳 BROTHER YOU ARE 20 NOW....you are literally such a fun loving person to whom I can relate to it's so good to have a friend like you🫂🫂";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                KshitijaButton.src="assests/kshitija_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //SAHIL
+             SahilButton.addEventListener('click', () => {
+                currentCharacter="sahil";
+                character_name.textContent = "sahil";
+                character_name.style.color= "#C4A484";
+                 message = "Happy Birthday, Day One! ❤️🎉 Still can’t believe I’ve literally known you since the day you were born😭... ";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                SahilButton.src="assests/sahil_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //SNEHA
+             SnehaButton.addEventListener('click', () => {
+                currentCharacter="sneha";
+                character_name.textContent = "sneha";
+                character_name.style.color= "#9EB9F3";
+                 message = "HAPPY 20TH NILUUUU. You're such an amazing person amd friend and I'm so grateful to have someone like you to annoy<3 ";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                SnehaButton.src="assests/sneha_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //LAVYA
+             LavyaButton.addEventListener('click', () => {
+                currentCharacter="lavya";
+                character_name.textContent = "lavya";
+                character_name.style.color= "#CD5C5C";
+                message = "You know what’s funny? I don’t even remember when you went from being “just a friend” to someone I overshare with at the worst possible times... ";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                LavyaButton.src="assests/lavya_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //ATHARVA
+             AtharvaButton.addEventListener('click', () => {
+                currentCharacter="atharva";
+                character_name.textContent = "atharva";
+                character_name.style.color= "#AEC6CF";
+                message = "Hi Nilu, Wishing you a very happy birthday!!!🥳 ❤️ ";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                AtharvaButton.src="assests/atharva_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //ADITI
+             AditiButton.addEventListener('click', () => {
+                currentCharacter="aditi";
+                character_name.textContent = "aditi";
+                character_name.style.color= "#AEC6CF";
+                message = "Happy 20th Birthday to my Favorite Human Niluuu😘💙";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                AditiButton.src="assests/aditi_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //KAJOL
+             KajolButton.addEventListener('click', () => {
+                currentCharacter="kajol";
+                character_name.textContent = "kajol";
+                character_name.style.color= "#FF00CD";
+                 message = "Happy Birthday Neels😘❤️youre such an important person in my life that wherever I go, you are the first one I look for🫂your smile literally brightens up every room you are in and it's an honor to be your friend💗...";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                KajolButton.src="assests/kajol_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+            //POLAROIDS
+            Polaroids.addEventListener('click', ()=>{
+                character_name.textContent="";
+                currentCharacter="polaroids";
+                message="YOU FOUND POLAROIDS ON THE GROUND. LOOK THROUGH THEM?";
+
+                next_button.textContent="NO";
+                finish_button.textContent="YES";
+
+                dialogueBox.style.display="block";
+                typingText.textContent="";
+                index=0;
+                typeWriter();
+            });
+            //NILU
+            NiluButton.addEventListener('click', ()=>{
+                character_name.textContent="";
+                currentCharacter="nilu";
+                next_button.textContent="";
+                NiluButton.src="assests/nilu_standing.png";
+                message="ITS YOU!  HAPPY BIRTHDAY <3";
+                dialogueBox.style.display="block";
+                typingText.textContent="";
+                index=0;
+                typeWriter();
+            });
+            //BIRTHDAY CAKE
+            BirthdayCake.addEventListener('click', ()=>{
+                character_name.textContent="";
+                currentCharacter="BirthdayCakeNotEaten";
+                message="ITS YOUR BIRTHDAY CAKE! WANT TO HAVE SOME?";
+
+                next_button.textContent="NO";
+                finish_button.textContent="YES";
+
+                dialogueBox.style.display="block";
+                typingText.textContent="";
+                index=0;
+                typeWriter();
+            });
+
+             //ANISHA
+             AnishaButton.addEventListener('click', () => {
+                SweetheartSound.play();
+                currentCharacter="anisha";
+                character_name.textContent = "anisha";
+                character_name.style.color= "#FFC0CB";
+                 message = "nilu,jaanemann💗 i hope our ‘boldu kya, bore hora hai.CHAL GHUMNE JAATE HAI.’ and making a spontaneous plan like this, never ever ends.";
+             // 3. Change the CSS display from "none" to "block" to make it pop up!
+                 dialogueBox.style.display = "block";
+                AnishaButton.src="assests/anisha_standing.png";
+                // 4. Reset variables and start your typing effect
+                typingText.textContent = "";
+                index = 0;
+                count=0;
+                clear=0;
+                typeWriter(); 
+            });
+
+            finish_button.addEventListener('click', () => {
+                if(currentCharacter=="smit"){
+                    selectSound.play();
+                    SmitButton.src="assests/smit_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="anush"){
+                    selectSound.play();
+                    NushiButton.src="assests/pixil-gif-drawing.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="sneha"){
+                    selectSound.play();
+                    SnehaButton.src="assests/sneha_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="kshitija"){
+                    selectSound.play();
+                    KshitijaButton.src="assests/kshitija_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="atharva"){
+                    selectSound.play();
+                    AtharvaButton.src="assests/atharva_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="aditi"){
+                    selectSound.play();
+                    AditiButton.src="assests/aditi_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="lavya"){
+                    selectSound.play();
+                    LavyaButton.src="assests/lavya_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="siya"){
+                    selectSound.play();
+                    SiyaButton.src="assests/siya_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="sahil"){
+                    selectSound.play();
+                    SahilButton.src="assests/sahil_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="nilu"){
+                    selectSound.play();
+                    NiluButton.src="assests/nilu_gif.png";
+                    next_button.innerHTML="<u>next</u>";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="godi"){
+                    selectSound.play();
+                    GodiButton.src="godi_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="anish"){
+                    selectSound.play();
+                    AviButton.src="assests/avi_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="kajol"){
+                    selectSound.play();
+                    KajolButton.src="assests/kajol_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="polaroids"){
+                    PolaroidSound.play();
+                    PhotographSound.play();
+                    BGMUSIC.pause();
+                    dialogueBox.style.display = "none";
+                    finish_button.innerHTML="<u>finish</u>";
+                    next_button.innerHTML="<u>next</u>";
+
+                    imageShowcaseOverlay.style.display = "flex";
+                    // DISMISS MECHANISM: Click anywhere on the dark background to close it out
+                    ForwardArrow.addEventListener('click', () => {
+                        PolaroidSound.play();
+                        if (currentPhotoIndex < polaroidImages.length-1) {
+                            currentPhotoIndex++; // Advance index up by 1
+                            polaroid_image.src=polaroidImages[currentPhotoIndex];
+                        }
+                        else{
+                            currentPhotoIndex=0;
+                            polaroid_image.src=polaroidImages[currentPhotoIndex];
+                        }
+                    })
+                    BackwardArrow.addEventListener('click', () => {
+                        PolaroidSound.play();
+                        if (currentPhotoIndex>0) {
+                            currentPhotoIndex--; // Advance index up by 1
+                            polaroid_image.src=polaroidImages[currentPhotoIndex];
+                        }
+                        else{
+                            currentPhotoIndex=polaroidImages.length-1;
+                            polaroid_image.src=polaroidImages[currentPhotoIndex];
+                        }
+                    })
+                    // DISMISS MECHANISM: Click anywhere on the dark background to close it out
+                    ClosePolaroids.addEventListener('click', () => {
+                        PhotographSound.pause();
+                        PhotographSound.currentTime=0;
+                        BGMUSIC.play();
+                        imageShowcaseOverlay.style.display = "none";
+                        currentCharacter = ""; // Clear state so you can click other sprites again
+                            });
+                    }   
+                else if(currentCharacter=="anisha"){
+                    selectSound.play();
+                    AnishaButton.src="assests/anisha_gif.gif";
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+                else if(currentCharacter=="BirthdayCakeNotEaten"){
+                    BGMUSIC.pause();
+                    PicnicSound.play();
+                    flash.classList.add('active'); //turns on white flash screen
+                    // Wait 150 milliseconds, then fade it back out
+                    setTimeout(() => {
+                        flash.classList.remove('active');
+                    }, 4000);
+                    finish_button.innerHTML="<u>finish</u>";
+                    next_button.innerHTML="<u>next</u>";
+                    currentCharacter="BirthdayCakeEaten";
+                    index=0;
+                    typingText.textContent="";
+                    message="YOU AND YOUR FRIENDS HAD SOME BIRTHDAY CAKE. YOU AND YOUR FRIENDS FEEL LIKE NEW.";
+                    typeWriter();
+                }
+                else if(currentCharacter=="BirthdayCakeEaten"){
+                    selectSound.play();
+                    BGMUSIC.play();
+                    dialogueBox.style.display = "none";
+                    index=message.length;
+                }
+            })
+            
+             next_button.addEventListener('click', () => {
+                if(currentCharacter=="smit"){                //when smit
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="abhhhh. Aur kya boluu ummmmm ummmmmmmmm Ummmmmmmmmmm...";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="Haaaa yaad aayaaaa hehehehe bday ke bahane thoda unblock bhi kardegi toh majja aajayega hehehehehe👉🏻👈🏻";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            selectSound.play();
+                            count++;
+                            message="Ik itna kuch likh nai paya par yeh yaad rakhna ki we r always there for youuu 🫶🏻🫶🏻🫶🏻";
+                            typeWriter(); 
+                        }
+                        else if(count==3){
+                            wrongSound.play();
+                        }
+                }
+                if(currentCharacter=="siya"){                //when siya
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="Thank you for always being there for me, as a friend, and an elder sister. LOVE YOU LOADSS BABYGURLLL🥰✨🫶🏻";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            wrongSound.play();
+                        }
+                }
+                if(currentCharacter=="kshitija"){                //when kshitija
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="you are so pretty, so talented so cool, and so funny ofc ,it was so much fun getting a piercing with youu ";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="BHAI AUR PIERCING KRTE SAATHME JALDII ITCH HO RHA ABHII SEE 😭😭PIERCING BUDDIES LIKE YOU SAID 😂😘";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            selectSound.play();
+                            count++;
+                            message="it's always so good to hangout with you, BHAI LET US PLAY MORE ROBLOX HORROR GAMES SAATHMEE LIKE LAST TIME 🤩💃";
+                            typeWriter(); 
+                        }
+                        else if(count==3){
+                            selectSound.play();
+                            count++;
+                            message="and also last but ofc not the least I really want are friendship to grow even more deeper cause I love u soo muchh I hope you have a great year ahead FILLED WITH JOY 🥰🤩 LOVE YOU SOO MUCH 🫶🫂";
+                            typeWriter(); 
+                        }
+                        else if(count==4){
+                            wrongSound.play();
+                        }
+                }
+                if(currentCharacter=="aditi"){                //when aditi
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="I honestly cannot believe we are officially leaving our teens behind It feels like just yesterday we were sitting in Ruchita Miss’s class definitely our fav teacher ever probably whispering and trying not to get caught😭";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="Looking back, my one of  fav memory will always be the time I completely fell down on that stage of pinto school for dance which had large monster stairs😝";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            selectSound.play();
+                            count++;
+                            message="Literally a embracing and funny but Instead of making a scene, you just cracked up with me and made it comfortable.";
+                            typeWriter(); 
+                        }
+                        else if(count==3){
+                            selectSound.play();
+                            count++;
+                            message="More than a decade has passed since we first became friends, and so much around us has changed We’ve grown up and started figuring out our own paths. ";
+                            typeWriter(); 
+                        }
+                        else if(count==4){
+                            selectSound.play();
+                            count++;
+                            message="But through all the years, the one thing that never wavered was us. Our BOND has only grown 💪🏻 ";
+                            typeWriter(); 
+                        }
+                        else if(count==5){
+                            selectSound.play();
+                            count++;
+                            message="No matter how much time passes, we always pick up right where we left off🫂You have a heart of gold, Nilu Watching you grow into the amazing person you are today and ever been has been the best Your personality lift ups my mood like magic✨ ";
+                            typeWriter(); 
+                        }
+                        else if(count==6){
+                            selectSound.play();
+                            count++;
+                            message="I hope your 20's bring you endless happiness, exciting adventures, and everything you’ve been working so hard for 🥂 to 20 years of you, and to a lifetime of more memories together. iloveuuuu always and forever grateful to have you💙✨🫂";
+                            typeWriter(); 
+                        }
+                        else if(count==7){
+                            wrongSound.play();
+                        }
+                }
+                if(currentCharacter=="sneha"){                //when sneha
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="I'm so incredibly proud of the person who've become and everything that you've achieved. I hope you have the absolute best day and year ahead and get everything that you wish for. ";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="I love you so so much💗 Happy 20th (you're not a teen anymore HAHA😈)";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            wrongSound.play();
+                        }
+                }
+                if(currentCharacter=="lavya"){                //when lavya
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="Thanks for always being there, listening to my random thoughts, and somehow convincing me your terrible jokes are funny...";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="I hope this year treats you well… or at least better than your sense of humour does. You deserve it (mostly). 🫶🏻";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            selectSound.play();
+                            count++;
+                            message="Happy Birthdayyy! ❤️";
+                            typeWriter(); 
+                        }
+                        else if(count==3){
+                            wrongSound.play();
+                        }
+                }
+                if(currentCharacter=="atharva"){                //when atharva
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="I am very grateful that you are one of my closest friends since childhood. It has always been funny being with you every time...";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="I hope we go on a trip soon 🚗. Once again wishing you a very happy birthday ✨🫂❤️";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            wrongSound.play();
+                        }
+                }
+                else if(currentCharacter=="sahil"){                //when sahil
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                        index=0;
+                        clear=0;
+                        typingText.textContent="";
+                        if(count==0){
+                            selectSound.play();
+                            count++;
+                            message="From saying “YES” to every random plan and every freaking trip to making the best memories together!";
+                            typeWriter();
+                        
+                        }
+                        else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="We’re truly the most besharam! Here’s to many more spontaneous adventures, endless laughs, and crazy stories. Welcome to the 20s chat! ";
+                            typeWriter();
+                        }
+                        else if(count==2){
+                            wrongSound.play();
+                        }
+                }
+                else if(currentCharacter=="anush"){     //when anush
+                    wrongSound.play();
+                }
+                else if(currentCharacter=="polaroids"){    //when polaroids
+                    selectSound.play();
+                    dialogueBox.style.display="none";
+                    finish_button.innerHTML="<u>finish</u>";
+                    next_button.innerHTML="<u>next</u>";
+                }
+                else if(currentCharacter=="BirthdayCakeNotEaten"){    //when birthday cake
+                    selectSound.play();
+                    dialogueBox.style.display="none";
+                    finish_button.innerHTML="<u>finish</u>";
+                    next_button.innerHTML="<u>next</u>";
+                }
+                else if(currentCharacter=="anisha"){      //when anisha
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                    index=0;
+                    clear=0;
+                    typingText.textContent="";
+                    if(count==0){
+                        SweetheartSound.play();
+                        count++;
+                        message="its so fun to be with youu<3 i love how we match each other’s vibes and I LOVE YOUUUUU💗😘 also, gu khate reheeee forever pleaseeee ";
+                        typeWriter();
+                    }
+                    else if(count==1){
+                            wrongSound.play();
+                        }
+                }
+                else if(currentCharacter=="kajol"){      //kajol
+                    if(index<message.length && clear==0){
+                            selectSound.play();
+                            index=message.length-1;
+                            typingText.textContent=message;
+                            clear++;
+                            return;
+                        }
+                    index=0;
+                    clear=0;
+                    typingText.textContent="";
+                    if(count==0){
+                        selectSound.play();
+                        count++;
+                        message=" You always help me so much and have been there for me in my bad times and my good times. I will never forget that, and I want to thank you for everything that you do and for being YOU💃❤️";
+                        typeWriter();
+                    }
+                    else if(count==1){
+                            selectSound.play();
+                            count++;
+                            message="I love you from the bottom of my heart, and I hope that you have an amazing day🎉🎊 I love you to the moon and to saturn✨️❤️";
+                            typeWriter(); 
+                        }
+                    else if(count==2){
+                            wrongSound.play();
+                        }
+                }
+                else{
+                    wrongSound.play();
+                }
+            });
             function typeWriter() {
                 if (index < message.length) {
                     typeSound.play()
                     typingText.textContent += message.charAt(index);
                     index++;
                     typeSound.play()
-                    setTimeout(typeWriter, 50); 
+                    setTimeout(typeWriter, 30); 
                     }
                 }
         </script>
